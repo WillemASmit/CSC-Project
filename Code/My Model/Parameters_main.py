@@ -10,7 +10,7 @@ from Constants_main import Constants
 
 A,alpha_sab,alpha_sg,Ca,Cab,Cf,Cg,Ci,din,eg,eg,ep,g,ka,kf,ki,Lc,Li,Ltube,rhoa,rhoab,rhof,rhog,rhoi,sigma,tau,Va,Vab,Vg,Vi = Constants()
 
-def hgam_fun(v_wind, Tlist): #hiam has same function
+def hgam_fun(v_wind, Tlist,del_z): #hiam has same function
     Tg, Ta, Tab, Tf, Ti, Tam = Tlist
     mu = 1.849E-5
     Re = rhoa*v_wind*Lc/mu
@@ -22,20 +22,20 @@ def hgam_fun(v_wind, Tlist): #hiam has same function
         Nu = 0.664*Re**0.5*Pr**(1/3)
     return Nu*ka/Lc
     
-def hf_fun(mf, Tlist):
+def hf_fun(mf, Tlist,del_z):
     Tg, Ta, Tab, Tf, Ti, Tam = Tlist
     muf = 8.9E-4
     V = mf/(np.pi/4*din**2)/rhof
-    Re = rhof*V*Ltube/muf
+    Re = rhof*V*del_z/muf
     Pr = 1.5
     Nu = 0
     if Re>2000:
         Nu = 0.023*Re**0.8*Pr**0.4  #kyk maar net na die n van 0.4
     elif Re>2000:
-        Nu = 3.66 + (0.065*din/Ltube*Re*Pr)/(1+0.04*((din/Ltube)*Re*Pr)**(2/3))
-    return Nu*kf/Ltube
+        Nu = 3.66 + (0.065*din/del_z*Re*Pr)/(1+0.04*((din/del_z)*Re*Pr)**(2/3))
+    return Nu*kf/del_z
     
-def hga_fun(Tlist):
+def hga_fun(Tlist,del_z):
     Tg, Ta, Tab, Tf, Ti, Tam = Tlist
     Pr = 0.7202
     v = 1.568E-5
@@ -50,7 +50,7 @@ def hga_fun(Tlist):
         Nu = 0.15*Ra**(1/3)
     return Nu*ka/Lc
     
-def haab_fun(Tlist):
+def haab_fun(Tlist,del_z):
     Tg, Ta, Tab, Tf, Ti, Tam = Tlist
     Pr = 0.7202
     v = 1.568E-5
@@ -61,13 +61,15 @@ def haab_fun(Tlist):
     Nu = 0.27*Ra**(1/4)
     return Nu*ka/Lc
 
-def Parameters(G, vwind, Tlist, mf, del_z):    
-    hgam = hgam_fun(vwind,Tlist)
-    hga = hga_fun(Tlist)
-    haab = haab_fun(Tlist)
-    hf = hf_fun(mf,Tlist)
+def Parameters(G, vwind, Tlist, mf, del_z):
+    A = Constants()[0]
+    hgam = hgam_fun(vwind,Tlist,del_z)
+    hga = hga_fun(Tlist,del_z)
+    haab = haab_fun(Tlist,del_z)
+    hf = hf_fun(mf,Tlist,del_z)
     hiam = hgam
     Af = din*np.pi*del_z
+    A = A/Lc*del_z
 #    print (hgam, hga, haab, hf, hiam)
     
     B = rhog*Vg*Cg

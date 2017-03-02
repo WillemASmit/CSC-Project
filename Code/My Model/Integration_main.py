@@ -6,9 +6,14 @@ Created on Thu Feb 16 16:41:04 2017
 """
 
 from Parameters_main import Parameters
+from Constants_main import Constants
 
 def Integration_step(G, vwind, mf, Tlist, Tf_prev, del_t, del_z):
+    A,alpha_sab,alpha_sg,Ca,Cab,Cf,Cg,Ci,din,eg,eg,ep,g,ka,kf,ki,Lc,Li,Ltube,rhoa,rhoab,rhof,rhog,rhoi,sigma,tau,Va,Vab,Vg,Vi = Constants()
     Tg, Ta, Tab, Tf, Ti, Tam = Tlist
+    
+    A = A/Lc*del_z
+    G = G*A
     B,C,D,E,F,H,I,J,K,L,M,N,O,P,Q,R,S,V,W,X,Y = Parameters(G, vwind, Tlist, mf, del_z)
     Tsky = 0.0552*Tam**1.5
     
