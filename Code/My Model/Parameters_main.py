@@ -26,23 +26,23 @@ def hf_fun(mf, Tlist,del_z):
     Tg, Ta, Tab, Tf, Ti, Tam = Tlist
     muf = 8.9E-4
     V = mf/(np.pi/4*din**2)/rhof
-    Re = rhof*V*del_z/muf
+    Re = rhof*V*Ltube/muf
     Pr = 1.5
     Nu = 0
     if Re>2000:
         Nu = 0.023*Re**0.8*Pr**0.4  #kyk maar net na die n van 0.4
     elif Re>2000:
-        Nu = 3.66 + (0.065*din/del_z*Re*Pr)/(1+0.04*((din/del_z)*Re*Pr)**(2/3))
-    return Nu*kf/del_z
+        Nu = 3.66 + (0.065*din/Ltube*Re*Pr)/(1+0.04*((din/Ltube)*Re*Pr)**(2/3))
+    return Nu*kf/Ltube
     
 def hga_fun(Tlist,del_z):
     Tg, Ta, Tab, Tf, Ti, Tam = Tlist
     Pr = 0.7202
     v = 1.568E-5
-    p = 4
-    Lc = A/p
+    p = 6
+    L = A/p
     Beta = 1/((Tg+Ta)/2)
-    Ra = g*Beta*abs(Tg-Ta)*Lc**3/(v**2)*Pr
+    Ra = abs(g*Beta*(Tg-Ta)*L**3/(v**2)*Pr)
     Nu = 0
     if Ra<10E7:
         Nu = 0.54*Ra**(1/4)
@@ -54,10 +54,12 @@ def haab_fun(Tlist,del_z):
     Tg, Ta, Tab, Tf, Ti, Tam = Tlist
     Pr = 0.7202
     v = 1.568E-5
-    p = 4
-    Lc = A/p
+    p = 6
+    L = A/p
     Beta = 1/((Ta+Tf)/2)
-    Ra = g*Beta*abs(Tab-Ta)*Lc**3/(v**2)*Pr
+    Ra = abs(g*Beta*(Tab-Ta)*L**3/(v**2)*Pr)
+#    print(Tlist)
+#    print(Beta)
     Nu = 0.27*Ra**(1/4)
     return Nu*ka/Lc
 

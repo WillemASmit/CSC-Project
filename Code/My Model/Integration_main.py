@@ -20,6 +20,7 @@ def Integration_step(G, vwind, mf, Tlist, Tf_prev, del_t, del_z):
     dTgdt = Y/B*G - C/B*(Tg**4 - Tsky**4) - E/B*(Tg-Tam) - F/B*(Tg-Ta) #- D/B*G
     dTadt = I/H*(Tg-Ta) + J/H*(Tab-Ta)
     dTabdt = L/K*G - M/K*(Tab-Ta) - N/K*(Tab-Tf) - O/K*(Tab-Ti) - P/K*(Tab**4 - Tg**4)
+#    print(dTabdt)
     dTfdt = -V/W*(Tf-Tf_prev) + X/W*(Tab-Tf)
     dTidt = R/Q*(Tab-Ti) - S/Q*(Ti-Tam)
     
@@ -29,4 +30,6 @@ def Integration_step(G, vwind, mf, Tlist, Tf_prev, del_t, del_z):
     Tab += del_t*dTabdt
     Tf += del_t*dTfdt
     Ti += del_t*dTidt
+    
+#    print(Tg,Ta,Tab,Tf,Ti)
     return [Tg,Ta,Tab,Tf,Ti]
